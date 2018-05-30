@@ -1,0 +1,8 @@
+version: 0.01
+deps:
+  - https://raw.githubusercontent.com/moonlibs/kit/master/kit-scm-1.rockspec
+  - https://raw.githubusercontent.com/moonlibs/config/master/rockspecs/config-scm-2.rockspec
+  - https://raw.githubusercontent.com/moonlibs/package-reload/master/package.reload-scm-1.rockspec
+  - https://raw.githubusercontent.com/igorcoding/tarantool-spacer/master/rockspecs/spacer-scm-1.rockspec
+  - https://raw.githubusercontent.com/tarantool/moonwalker/master/moonwalker-scm-1.rockspec
+  - https://raw.githubusercontent.com/moonlibs/ffi-reloadable/master/ffi-reloadable-scm-1.rockspec
