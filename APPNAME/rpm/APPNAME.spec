@@ -1,11 +1,5 @@
-%define __autobuild__ 0
-
 %define __distribution APPNAME
 %define __summary "My great tarantool app"
-
-%define __repo    yestree
-%define __git     git@gitlab.corp.mail.ru:cloud/%{__repo}
-%define __dir     %{__distribution}
 
 %define version 0.01
 
@@ -22,13 +16,8 @@ Summary:        %{__summary}
 Group:          tarantool/db
 License:        proprietary
 
-%if %{__autobuild__}
-Packager: BUILD_USER
-Source0: %{__repo}-GIT_TAG.tar.bz2
-%else
 %if %{?SRC_DIR:0}%{!?SRC_DIR:1}
-Source0: %{__repo}.tar.bz2
-%endif
+Source0: %{__distribution}.tar.bz2
 %endif
 
 Requires: tarantool >= 1.9.0.50
@@ -37,38 +26,48 @@ BuildRequires: tarantool >= 1.9.0
 BuildRequires: tarantool-devel >= 1.9.0
 BuildRequires: lua-devel > 5.1
 BuildRequires: lua-devel < 5.2
-BuildRequires: luarocks
+# BuildRequires: luarocks
 
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 %{__summary}
 
-%prep
 %if %{?SRC_DIR:1}%{!?SRC_DIR:0}
-    rm -rf %{__repo}
-    cp -ravi %{SRC_DIR} %{__repo}
-    cd %{__repo}
+Branch: %(git rev-parse --abbrev-ref HEAD)
+Commit: %(git rev-parse HEAD)
+%define __git_branch %(git rev-parse --abbrev-ref HEAD)
+%define __git_commit %(git rev-parse HEAD)
+$ git status -suno
+%(git status -suno)
+%endif
+
+%prep
+pwd
+%if %{?SRC_DIR:1}%{!?SRC_DIR:0}
+	rm -rf %{__distribution}
+	cp -ravi %{SRC_DIR} %{__distribution}
+	cd %{__distribution}
 %else
-%setup -q -n %{__repo}
+%setup -q -n %{__distribution}
 %endif
 
 %build
-%if %{?SRC_DIR:1}%{!?SRC_DIR:0}
-    cd %{__repo}
-%endif
-cd %{__dir}
-make test
+pwd
+cd %{__distribution}
 
+make test
 mkdir -p ./%{name}-%{version}-%{release}-libs
-tarantool dep.lua --meta-file ./meta.yaml --luarocks-tree ./%{name}-%{version}-%{release}-libs
+
+# Install deps
+LUAROCKS_CONFIG=.luarocks-config luarocks install --only-deps --tree ./%{name}-%{version}-%{release}-libs rockspecs/APPNAME-scm-1.rockspec
 
 %install
+pwd
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
-%if %{?SRC_DIR:1}%{!?SRC_DIR:0}
-    cd %{__repo}
-%endif
-cd %{__dir}
+
+cd %{__distribution}
+
 install -d -m 0755 %{buildroot}/usr/share/%{packagename}  # for init.lua, app and libs
 
 install -m 0644 ./init.lua                  %{buildroot}/usr/share/%{packagename}/
@@ -79,6 +78,7 @@ install -d -m 0755 %{buildroot}/etc/%{packagename}  # for conf.lua
 install -m 0644 ./etc/conf.inst.lua         %{buildroot}/etc/%{packagename}/conf.lua
 
 %clean
+pwd
 rm -rf %{buildroot}
 
 %files

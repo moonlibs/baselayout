@@ -18,4 +18,7 @@ logs:
 	tail -n1 -f data/*.log
 
 dep:
-	tarantool dep.lua --meta-file ./meta.yaml --luarocks-tree ./libs
+	LUAROCKS_CONFIG=.luarocks-config luarocks --tree=./libs install --only-deps rockspecs/appname-scm-1.rockspec
+
+build:
+	rpmbuild -ba --define "SRC_DIR ${PWD}" rpm/APPNAME.spec
