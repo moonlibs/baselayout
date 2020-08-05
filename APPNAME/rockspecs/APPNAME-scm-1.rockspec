@@ -9,11 +9,11 @@ description = {
 	license = "Artistic",
 }
 dependencies = {
-	"kit scm-1",
-	"config scm-2",
+	"kit scm-2",
+	"config scm-4",
 	"package-reload scm-1",
 
-	"spacer scm-1",
+	"spacer scm-3",
 	"moonwalker scm-1",
 	"ffi-reloadable scm-1",
 }

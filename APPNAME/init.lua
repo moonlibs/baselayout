@@ -78,6 +78,7 @@ require 'config' {
 		end
 	end;
 	mkdir         = true,
+	master_selection_policy = 'etcd.cluster.master',
 }
 box.once('access:v1', function()
 	box.schema.user.grant('guest', 'read,write,execute', 'universe')

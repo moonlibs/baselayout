@@ -60,7 +60,7 @@ make test
 mkdir -p ./%{name}-%{version}-%{release}-libs
 
 # Install deps
-LUAROCKS_CONFIG=.luarocks-config luarocks install --only-deps --tree ./%{name}-%{version}-%{release}-libs rockspecs/APPNAME-scm-1.rockspec
+LUAROCKS_CONFIG=.luarocks-config luarocks --lua-version 5.1 install --only-deps --tree ./%{name}-%{version}-%{release}-libs rockspecs/APPNAME-scm-1.rockspec
 
 %install
 pwd

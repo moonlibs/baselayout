@@ -18,7 +18,7 @@ logs:
 	tail -n1 -f data/*.log
 
 dep:
-	LUAROCKS_CONFIG=.luarocks-config luarocks --tree=./libs install --only-deps rockspecs/appname-scm-1.rockspec
+	LUAROCKS_CONFIG=.luarocks-config luarocks --lua-version 5.1 --tree=./libs install --only-deps rockspecs/APPNAME-scm-1.rockspec
 
 build:
 	rpmbuild -ba --define "SRC_DIR ${PWD}" rpm/APPNAME.spec
